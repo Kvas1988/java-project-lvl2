@@ -10,12 +10,18 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.39.0'
 }
 
+dependencies {
+    implementation 'info.picocli:picocli:4.6.1'
+//    annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
+}
+
 application {
     mainClass = 'hexlet.code.App'
 }
 
 compileJava {
     options.release = 16
+//    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
 }
 
 repositories {
