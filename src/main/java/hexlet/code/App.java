@@ -1,21 +1,28 @@
 package hexlet.code;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
-@CommandLine.Command(name = "gendiff", version = "Differ 1.0", mixinStandardHelpOptions = true)
+@Command(name = "gendiff", version = "Differ 1.0", mixinStandardHelpOptions = true)
 public class App implements Runnable {
 
-    // @CommandLine.Option(names = {"-u", "--upper"}, description = "Upper Case")
-    // boolean isUpperCase = false;
-    //
-    // @CommandLine.Parameters(paramLabel = "<word>", defaultValue = "Hello, picocli",
-    //         description = "Word to be printed.")
-    // String text = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
+    @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
+    String format = "format";
+
+    @Parameters(paramLabel = "filepath1", defaultValue = "Hello, picocli",
+            description = "Path to first file")
+    String filePath1 = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
+
+    @Parameters(paramLabel = "filepath2", defaultValue = "Hello, picocli",
+            description = "Path to second file")
+    String filePath2 = "Hello picocli";
 
     @Override
     public void run() {
 
-        String diff = Differ.generate("hello", "world");
+        String diff = Differ.generate(filePath1, filePath2);
         System.out.println(diff);
     }
 
