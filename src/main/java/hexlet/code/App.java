@@ -11,19 +11,23 @@ import java.util.concurrent.Callable;
 public class App implements Callable<String> {
 
     @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
-    String format = "format";
+    private String format = "format";
 
-    @Parameters(paramLabel = "filepath1", defaultValue = "Hello, picocli",
-            description = "Path to first file")
-    String filePath1 = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
+    @Parameters(paramLabel = "filepath1", defaultValue = "file1.json",
+            description = "file1.json")
+    private String filePath1 = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
 
-    @Parameters(paramLabel = "filepath2", defaultValue = "Hello, picocli",
+    @Parameters(paramLabel = "filepath2", defaultValue = "file2.json",
             description = "Path to second file")
-    String filePath2 = "Hello picocli";
+    private String filePath2 = "file2.json";
 
+    /**
+     * Picocli uses this function to implement CLI API.
+     * @return Formatted string with diff of two json files given
+     * @throws Exception may throw IOException when parsing given files.
+     */
     @Override
     public String call() throws Exception {
-
         String diff = Differ.generate(filePath1, filePath2);
         System.out.println(diff);
         return diff;

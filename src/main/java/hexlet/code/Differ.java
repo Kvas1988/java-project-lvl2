@@ -34,7 +34,6 @@ public class Differ {
     }
 
     public static JsonNode getDataFromJsonFile(File file) throws IOException {
-        // TODO: check if file is not JSON
         ObjectMapper mapper = new ObjectMapper();
         // mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
         // Data data = objectMapper.readValue(file, Data.class);
@@ -50,7 +49,7 @@ public class Differ {
         List<String> sortedFields = new ArrayList<>(fields);
         Collections.sort(sortedFields);
 
-        for(String field : sortedFields) {
+        for (String field : sortedFields) {
             if (node1.has(field)) {
                 JsonNode valueNode = node1.get(field);
                 String fieldValueText = field + ": " + valueNode.asText();
@@ -66,8 +65,8 @@ public class Differ {
                     diffsList.add("  - " + fieldValueText);
                 }
             } else {
-                    String fieldValueFromNode2 = field +": " + node2.get(field).asText();
-                    diffsList.add("  + " + fieldValueFromNode2);
+                String fieldValueFromNode2 = field + ": " + node2.get(field).asText();
+                diffsList.add("  + " + fieldValueFromNode2);
             }
         }
 
