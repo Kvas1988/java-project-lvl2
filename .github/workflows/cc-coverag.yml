@@ -1,0 +1,20 @@
+name: CodeClimate Coverage
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test & publish code coverage
+      - uses: actions/checkout@v2 # download copy of repo on the runner
+      - uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          # Set CC_TEST_REPORTER_ID as secret of your repo
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          JACOCO_SOURCE_PATH: "${{github.workspace}}/src/main/java"
+        with:
+          # The report file must be there, otherwise Code Climate won't find it
+          coverageCommand: ./gradlew test
+          coverageLocations: ${{github.workspace}}/target/site/jacoco/jacoco.xml:jacoco
