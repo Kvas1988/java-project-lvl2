@@ -7,8 +7,11 @@ run-dist:
 lint:
 	./gradlew checkstyleMain
 
+test:
+	./gradlew test
+
 build:
-	./gradlew clean checkstyleMain install
+	./gradlew clean checkstyleMain test install
 
 .PHONY: build
 
@@ -16,5 +19,4 @@ check-updates:
 	./gradlew dependencyUpdates
 
 read-json:
-	./build/install/app/bin/app file1.json file2.json
-#/Users/shokhin_al/Developer/java-project-lvl2/file2.json
+	./build/install/app/bin/app src/test/resources/file1.json src/test/resources/file2.json

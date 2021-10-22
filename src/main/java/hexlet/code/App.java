@@ -22,7 +22,7 @@ public class App implements Callable<String> {
     private String filePath2 = "file2.json";
 
     /**
-     * Picocli uses this function to implement CLI API.
+     * Picocli uses this function to implement CLI.
      * @return Formatted string with diff of two json files given
      * @throws Exception may throw IOException when parsing given files.
      */

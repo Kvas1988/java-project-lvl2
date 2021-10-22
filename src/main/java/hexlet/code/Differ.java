@@ -73,7 +73,7 @@ public class Differ {
         return diffsList;
     }
 
-    private static Set<String> getFields(JsonNode node) {
+    public static Set<String> getFields(JsonNode node) {
         Iterator<String> iterator = node.fieldNames();
         Set<String> fields = new HashSet<>();
 
@@ -85,7 +85,7 @@ public class Differ {
         return fields;
     }
 
-    private static String diffsListToString(List<String> diffsList) {
+    public static String diffsListToString(List<String> diffsList) {
         StringBuilder sb = new StringBuilder("{\n");
         for (String diff : diffsList) {
             sb.append(diff + "\n");
