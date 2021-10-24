@@ -6,3 +6,6 @@ build
 
 .idea
 .DS_Store
+
+# env vars for act tool
+my.secrets
