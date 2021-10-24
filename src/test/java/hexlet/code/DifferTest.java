@@ -50,7 +50,7 @@ public class DifferTest {
     // region getFileObj Test
     @Test
     void getFileObj_RelativePathTest() {
-        String absFilepath = System.getProperty("user.id") + "/" + filename1;
+        String absFilepath = System.getProperty("user.dir") + "/" + filename1;
         File expected = new File(absFilepath);
         assertEquals(expected, file1);
     }
