@@ -29,7 +29,7 @@ public class DifferTest {
     @BeforeEach
     void setup() {
         filename1 = "src/test/resources/file1.json";
-        filename2 = "/Users/shokhin_al/Developer/java-project-lvl2/src/test/resources/file2.json";
+        filename2 = "src/test/resources/file2.json";
         notExistingFilepath = "src/test/resources/I_DONT_EXIST.json";
         notJsonFilepath = "src/test/resources/notJson.json";
         emptyJsonFilepath = "src/test/resources/empty.json";
@@ -50,7 +50,7 @@ public class DifferTest {
     // region getFileObj Test
     @Test
     void getFileObj_RelativePathTest() {
-        String absFilepath = "/Users/shokhin_al/Developer/java-project-lvl2/src/test/resources/file1.json";
+        String absFilepath = System.getProperty("user.id") + "/" + filename1;
         File expected = new File(absFilepath);
         assertEquals(expected, file1);
     }
