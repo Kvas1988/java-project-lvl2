@@ -5,3 +5,6 @@
 
 ### Json Diffs:
 [![asciicast](https://asciinema.org/a/x2TWU1Rl1GuFcquU93wkWgQso.svg)](https://asciinema.org/a/x2TWU1Rl1GuFcquU93wkWgQso?speed=2)
+
+### Yaml Diffs:
+[![asciicast](https://asciinema.org/a/GDnChfAjQZr48gRBiZ63hyjXR.svg)](https://asciinema.org/a/GDnChfAjQZr48gRBiZ63hyjXR?speed=2)

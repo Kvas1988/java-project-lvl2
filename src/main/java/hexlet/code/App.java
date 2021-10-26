@@ -13,12 +13,10 @@ public class App implements Callable<String> {
     @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
     private String format = "format";
 
-    @Parameters(paramLabel = "filepath1", defaultValue = "file1.json",
-            description = "file1.json")
+    @Parameters(paramLabel = "filepath1", description = "Path to first file")
     private String filePath1 = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
 
-    @Parameters(paramLabel = "filepath2", defaultValue = "file2.json",
-            description = "Path to second file")
+    @Parameters(paramLabel = "filepath2", description = "Path to second file")
     private String filePath2 = "file2.json";
 
     /**
