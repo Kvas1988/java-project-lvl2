@@ -16,39 +16,56 @@ public class DifferTest {
 
     private String jsonFilename1;
     private String jsonFilename2;
+    private String jsonFilename3;
+    private String jsonFilename4;
     private String notExistingFilepath;
     private String notJsonFilepath;
     private String emptyJsonFilepath;
     private String jsonStringFile1;
     private String yamlFilename1;
     private String yamlFilename2;
+    private String yamlFilename3;
+    private String yamlFilename4;
     private String yamlStringFile1;
+    private String differFiles3_4;
 
     private File jsonFile1;
     private File jsonFile2;
+    private File jsonFile3;
+    private File jsonFile4;
     private File notExistingFile;
     private File notJsonFile;
     private File emptyJsonFile;
     private File yamlFile1;
     private File yamlFile2;
+    private File yamlFile3;
+    private File yamlFile4;
 
     @BeforeEach
     void setup() {
         jsonFilename1 = "src/test/resources/file1.json";
         jsonFilename2 = "src/test/resources/file2.json";
+        jsonFilename3 = "src/test/resources/file3.json";
+        jsonFilename4 = "src/test/resources/file4.json";
         notExistingFilepath = "src/test/resources/I_DONT_EXIST.json";
         notJsonFilepath = "src/test/resources/notJson.json";
         emptyJsonFilepath = "src/test/resources/empty.json";
         yamlFilename1 = "src/test/resources/file1.yml";
         yamlFilename2 = "src/test/resources/file2.yml";
+        yamlFilename3 = "src/test/resources/file3.yml";
+        yamlFilename4 = "src/test/resources/file4.yml";
 
         jsonFile1 = Differ.getFileObj(jsonFilename1);
         jsonFile2 = Differ.getFileObj(jsonFilename2);
+        jsonFile3 = Differ.getFileObj(jsonFilename3);
+        jsonFile4 = Differ.getFileObj(jsonFilename4);
         notExistingFile = Differ.getFileObj(notExistingFilepath);
         notJsonFile = Differ.getFileObj(notJsonFilepath);
         emptyJsonFile = Differ.getFileObj(emptyJsonFilepath);
         yamlFile1 = Differ.getFileObj(yamlFilename1);
         yamlFile2 = Differ.getFileObj(yamlFilename2);
+        yamlFile3 = Differ.getFileObj(yamlFilename3);
+        yamlFile4 = Differ.getFileObj(yamlFilename4);
 
 
         jsonStringFile1 = "{ \"host\" : \"hexlet.io\", \"timeout\" : 50, \"proxy\" : \"123.234.53.22\", " +
@@ -62,6 +79,32 @@ public class DifferTest {
                 "\"count\": 1," +
                 "\"location\": \"a pear tree\"" +
                 "\"turtle-doves\": \"two\" " +
+                "}";
+
+        differFiles3_4 = "{\n" +
+                "    chars1: [a, b, c]\n" +
+                "  - chars2: [d, e, f]\n" +
+                "  + chars2: false\n" +
+                "  - checked: false\n" +
+                "  + checked: true\n" +
+                "  - default: null\n" +
+                "  + default: [value1, value2]\n" +
+                "  - id: 45\n" +
+                "  + id: null\n" +
+                "  - key1: value1\n" +
+                "  + key2: value2\n" +
+                "    numbers1: [1, 2, 3, 4]\n" +
+                "  - numbers2: [2, 3, 4, 5]\n" +
+                "  + numbers2: [22, 33, 44, 55]\n" +
+                "  - numbers3: [3, 4, 5]\n" +
+                "  + numbers4: [4, 5, 6]\n" +
+                "  + obj1: {nestedKey=value, isNested=true}\n" +
+                "  - setting1: Some value\n" +
+                "  + setting1: Another value\n" +
+                "  - setting2: 200\n" +
+                "  + setting2: 300\n" +
+                "  - setting3: true\n" +
+                "  + setting3: none\n" +
                 "}";
     }
 
@@ -221,4 +264,28 @@ public class DifferTest {
     }
 
     // endregions
+
+    @Test
+    void getNodeDataFromFile_ComplexJsonTest() throws IOException {
+        JsonNode node3 = Parser.getNodeDataFromFile(jsonFile3);
+        JsonNode node4 = Parser.getNodeDataFromFile(jsonFile4);
+
+        List<String> diff = Differ.getDiff(node3, node4);
+        String diffString = Differ.diffsListToString(diff);
+
+        assertEquals(differFiles3_4, diffString);
+    }
+
+    @Test
+    void getNodeDataFromFile_ComplexYmlTest() throws IOException {
+        JsonNode node3 = Parser.getNodeDataFromFile(yamlFile3);
+        JsonNode node4 = Parser.getNodeDataFromFile(yamlFile4);
+
+        List<String> diff = Differ.getDiff(node3, node4);
+        String diffString = Differ.diffsListToString(diff);
+
+
+
+        assertEquals(differFiles3_4, diffString);
+    }
 }

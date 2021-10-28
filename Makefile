@@ -19,7 +19,7 @@ check-updates:
 	./gradlew dependencyUpdates
 
 read-json:
-	./build/install/app/bin/app src/test/resources/file1.json src/test/resources/file2.json
+	./build/install/app/bin/app src/test/resources/file3.json src/test/resources/file4.json
 
 read-yaml:
 	./build/install/app/bin/app src/test/resources/file1.yml src/test/resources/file2.yml

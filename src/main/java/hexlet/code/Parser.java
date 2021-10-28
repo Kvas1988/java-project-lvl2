@@ -2,6 +2,7 @@ package hexlet.code;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.io.FilenameUtils;
@@ -29,13 +30,16 @@ public class Parser {
         return mapper.readValue(file, typeRef);
     }
 
-    // public static JsonNode getDataFromJsonFile(File file) throws IOException {
-    //     ObjectMapper mapper = new ObjectMapper();
-    //     // mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
-    //     // Data data = objectMapper.readValue(file, Data.class);
-    //     return mapper.readTree(file);
-    // }
+    public static JsonNode getNodeDataFromFile(File file) throws IOException {
+        String extension = FilenameUtils.getExtension(file.toString());
+        JsonFactory factory = switch (extension) {
+            case "yml" -> new YAMLFactory();
+            default -> new JsonFactory();
+        };
 
+        ObjectMapper mapper = new ObjectMapper(factory);
+        return mapper.readTree(file);
+    }
 
     public static Set<String> getFields(Map<String, String> data) {
         Iterator<String> iterator = data.keySet().iterator();
@@ -47,6 +51,23 @@ public class Parser {
         }
 
         return fields;
+    }
+
+    public static Set<String> getFields(JsonNode node) {
+        Iterator<String> iterator = node.fieldNames();
+        Set<String> fields = new HashSet<>();
+
+        while (iterator.hasNext()) {
+            String field = iterator.next();
+            fields.add(field);
+        }
+
+        return fields;
+    }
+
+    public static JsonNode testNodes(File file) throws IOException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        return mapper.readTree(file);
     }
 
 }

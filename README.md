@@ -8,3 +8,6 @@
 
 ### Yaml Diffs:
 [![asciicast](https://asciinema.org/a/GDnChfAjQZr48gRBiZ63hyjXR.svg)](https://asciinema.org/a/GDnChfAjQZr48gRBiZ63hyjXR?speed=2)
+
+### Json with inner containers Diffs:
+[![asciicast](https://asciinema.org/a/xbhrQZlHidgzV0fpVGtp5jPsM.svg)](https://asciinema.org/a/xbhrQZlHidgzV0fpVGtp5jPsM?speed=2)
