@@ -3,6 +3,8 @@ package hexlet.code;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.formatter.PlainFormatter;
+import hexlet.code.formatter.StylishFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +42,9 @@ public class DifferTest {
     private File yamlFile2;
     private File yamlFile3;
     private File yamlFile4;
+
+    private StylishFormatter stylishFormatter = new StylishFormatter();
+    private PlainFormatter plainFormatter = new PlainFormatter();
 
     @BeforeEach
     void setup() {
@@ -178,43 +183,28 @@ public class DifferTest {
 
     // endregion
 
-    // region getDiff Test
+    // region PlainFormatter Test
     @Test
-    void getDiff_JsonTest() throws IOException {
-        Map<String, String> jsonFile1Data = Parser.getDataFromFile(jsonFile1);
-        Map<String, String> jsonFile2Data = Parser.getDataFromFile(jsonFile2);
+    void diffsListPlainFormatter_Test() throws IOException {
+        JsonNode yamlFile1Data = Parser.getNodeDataFromFile(yamlFile3);
+        JsonNode yamlFile2Data = Parser.getNodeDataFromFile(yamlFile4);
 
-        List<String> actual = Differ.getDiff(jsonFile1Data, jsonFile2Data);
-        List<String> expected = List.of("  - follow: false",
-                "    host: hexlet.io",
-                "  - proxy: 123.234.53.22",
-                "  - timeout: 50",
-                "  + timeout: 20",
-                "  + verbose: true"
-                );
-        assertEquals(expected, actual);
-    }
+        List<Diff> diffList = Differ.getDiff(yamlFile1Data, yamlFile2Data);
+        String actual = plainFormatter.formatDiffsList(diffList);
 
-    @Test
-    void getDiff_YamlTest() throws IOException {
-        Map<String, String> yamlFile1Data = Parser.getDataFromFile(yamlFile1);
-        Map<String, String> yamlFile2Data = Parser.getDataFromFile(yamlFile2);
-
-        List<String> actual = Differ.getDiff(yamlFile1Data, yamlFile2Data);
-        List<String> expected = List.of(
-                "    calling-birds: four",
-                "    count: 1",
-                "  - doe: a deer, a female deer",
-                "  + french-hens: 3",
-                "  - golden-rings: 5",
-                "  + golden-rings: 6",
-                "    location: a pear tree",
-                "    pi: 3.14159",
-                "  + ray: a drop of golden sun",
-                "  - turtle-doves: two",
-                "  + turtle-doves: three",
-                "    xmas: true"
-        );
+        String expected = "Property 'chars2' was updated. From [complex value] to false\n" +
+                "Property 'checked' was updated. From false to true\n" +
+                "Property 'default' was updated. From null to [complex value]\n" +
+                "Property 'id' was updated. From 45 to null\n" +
+                "Property 'key1' was removed\n" +
+                "Property 'key2' was added with value: 'value2'\n" +
+                "Property 'numbers2' was updated. From [complex value] to [complex value]\n" +
+                "Property 'numbers3' was removed\n" +
+                "Property 'numbers4' was added with value: [complex value]\n" +
+                "Property 'obj1' was added with value: [complex value]\n" +
+                "Property 'setting1' was updated. From 'Some value' to 'Another value'\n" +
+                "Property 'setting2' was updated. From 200 to 300\n" +
+                "Property 'setting3' was updated. From true to 'none'\n";
         assertEquals(expected, actual);
     }
 
@@ -222,12 +212,12 @@ public class DifferTest {
 
     // region diffsListToString Test
     @Test
-    void diffsListToString_JsonTest() throws IOException {
-        Map<String, String> jsonFile1Data = Parser.getDataFromFile(jsonFile1);
-        Map<String, String> jsonFile2Data = Parser.getDataFromFile(jsonFile2);
+    void diffsListStylishFormatter_JsonTest() throws IOException {
+        JsonNode jsonFile1Data = Parser.getNodeDataFromFile(jsonFile1);
+        JsonNode jsonFile2Data = Parser.getNodeDataFromFile(jsonFile2);
 
-        List<String> diffList = Differ.getDiff(jsonFile1Data, jsonFile2Data);
-        String actual = Differ.diffsListToString(diffList);
+        List<Diff> diffList = Differ.getDiff(jsonFile1Data, jsonFile2Data);
+        String actual = stylishFormatter.formatDiffsList(diffList);
         String expected = "{\n" +
                 "  - follow: false\n" +
                 "    host: hexlet.io\n" +
@@ -240,12 +230,12 @@ public class DifferTest {
     }
 
     @Test
-    void diffsListToString_YamlTest() throws IOException {
-        Map<String, String> yamlFile1Data = Parser.getDataFromFile(yamlFile1);
-        Map<String, String> yamlFile2Data = Parser.getDataFromFile(yamlFile2);
+    void diffsListStylishFormatter_YamlTest() throws IOException {
+        JsonNode yamlFile1Data = Parser.getNodeDataFromFile(yamlFile1);
+        JsonNode yamlFile2Data = Parser.getNodeDataFromFile(yamlFile2);
 
-        List<String> diffList = Differ.getDiff(yamlFile1Data, yamlFile2Data);
-        String actual = Differ.diffsListToString(diffList);
+        List<Diff> diffList = Differ.getDiff(yamlFile1Data, yamlFile2Data);
+        String actual = stylishFormatter.formatDiffsList(diffList);
         String expected = "{\n" +
                 "    calling-birds: four\n" +
                 "    count: 1\n" +
@@ -270,8 +260,8 @@ public class DifferTest {
         JsonNode node3 = Parser.getNodeDataFromFile(jsonFile3);
         JsonNode node4 = Parser.getNodeDataFromFile(jsonFile4);
 
-        List<String> diff = Differ.getDiff(node3, node4);
-        String diffString = Differ.diffsListToString(diff);
+        List<Diff> diff = Differ.getDiff(node3, node4);
+        String diffString = stylishFormatter.formatDiffsList(diff);
 
         assertEquals(differFiles3_4, diffString);
     }
@@ -281,10 +271,8 @@ public class DifferTest {
         JsonNode node3 = Parser.getNodeDataFromFile(yamlFile3);
         JsonNode node4 = Parser.getNodeDataFromFile(yamlFile4);
 
-        List<String> diff = Differ.getDiff(node3, node4);
-        String diffString = Differ.diffsListToString(diff);
-
-
+        List<Diff> diff = Differ.getDiff(node3, node4);
+        String diffString = stylishFormatter.formatDiffsList(diff);
 
         assertEquals(differFiles3_4, diffString);
     }
