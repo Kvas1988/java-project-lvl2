@@ -11,3 +11,6 @@
 
 ### Json with inner containers Diffs:
 [![asciicast](https://asciinema.org/a/xbhrQZlHidgzV0fpVGtp5jPsM.svg)](https://asciinema.org/a/xbhrQZlHidgzV0fpVGtp5jPsM?speed=2)
+
+### PlainFormatter
+[![asciicast](https://asciinema.org/a/rq9AeN1o56mhT53v6UlY03uK8.svg)](https://asciinema.org/a/rq9AeN1o56mhT53v6UlY03uK8?speed=2)
