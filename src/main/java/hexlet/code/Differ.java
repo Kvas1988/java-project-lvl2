@@ -2,6 +2,7 @@ package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import hexlet.code.formatter.Formatter;
+import hexlet.code.formatter.StylishFormatter;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,21 @@ public class Differ {
 
         List<Diff> diffsList = getDiff(dataFile1, dataFile2);
         Formatter formatter = Formatter.getFormatter(format);
+        return formatter.formatDiffsList(diffsList);
+    }
+
+    public static String generate(String filePath1, String filePath2) throws IOException {
+        // Parse files to JsonNodes
+        File file1 = getFileObj(filePath1);
+        // Map<String, String> dataFile1 = Parser.getDataFromFile(file1);
+        JsonNode dataFile1 = Parser.getNodeDataFromFile(file1);
+
+        File file2 = getFileObj(filePath2);
+        // Map<String, String> dataFile2 = Parser.getDataFromFile(file2);
+        JsonNode dataFile2 = Parser.getNodeDataFromFile(file2);
+
+        List<Diff> diffsList = getDiff(dataFile1, dataFile2);
+        Formatter formatter = new StylishFormatter();
         return formatter.formatDiffsList(diffsList);
     }
 
