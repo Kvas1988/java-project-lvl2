@@ -1,7 +1,9 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@JsonSerialize(using = DiffSerializer.class)
 public final class Diff {
     public enum DiffStatus {
         EQUAL,

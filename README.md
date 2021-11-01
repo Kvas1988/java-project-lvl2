@@ -14,3 +14,6 @@
 
 ### PlainFormatter
 [![asciicast](https://asciinema.org/a/rq9AeN1o56mhT53v6UlY03uK8.svg)](https://asciinema.org/a/rq9AeN1o56mhT53v6UlY03uK8?speed=2)
+
+### JsonFormatter
+[![asciicast](https://asciinema.org/a/24Wk0RYhDthtojD4ofcWk8fQO.svg)](https://asciinema.org/a/24Wk0RYhDthtojD4ofcWk8fQO?speed=2)

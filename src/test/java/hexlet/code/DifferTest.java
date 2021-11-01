@@ -134,28 +134,23 @@ public class DifferTest {
     // region getDataFromFile
     @Test
     void getDataFromFile_JsonFile1Test() throws IOException {
-        Map<String, String> actual = Parser.getDataFromFile(jsonFile1);
+        JsonNode actual = Parser.getNodeDataFromFile(jsonFile1);
 
-        TypeReference<HashMap<String, String>> typeRef = new TypeReference<>() {};
-        Map<String, String> expected = new ObjectMapper().readValue(jsonStringFile1, typeRef);
+        JsonNode expected = new ObjectMapper().readTree(jsonStringFile1);
         assertEquals(expected, actual);
 
-        Map<String, String> JsonFile2Data = Parser.getDataFromFile(jsonFile2);
+        JsonNode JsonFile2Data = Parser.getNodeDataFromFile(jsonFile2);
         assertNotEquals(actual, JsonFile2Data);
     }
 
     @Test
     void getDataFromFile_ExceptionThrownTest() {
         assertThrows(IOException.class, () -> {
-            Parser.getDataFromFile(notExistingFile);
+            Parser.getNodeDataFromFile(notExistingFile);
         });
 
         assertThrows(IOException.class, () -> {
-            Parser.getDataFromFile(notJsonFile);
-        });
-
-        assertThrows(IOException.class, () -> {
-            Parser.getDataFromFile(emptyJsonFile);
+            Parser.getNodeDataFromFile(notJsonFile);
         });
     }
 
@@ -164,7 +159,7 @@ public class DifferTest {
     // region getFields
     @Test
     void getFields_FromJsonTest() throws IOException {
-        Map<String, String> jsonFile1Data = Parser.getDataFromFile(jsonFile1);
+        JsonNode jsonFile1Data = Parser.getNodeDataFromFile(jsonFile1);
         Set<String> actual = Parser.getFields(jsonFile1Data);
 
         Set<String> expected = Set.of("host", "timeout", "proxy", "follow");
@@ -173,7 +168,7 @@ public class DifferTest {
 
     @Test
     void getFields_FromYamlTest() throws IOException {
-        Map<String, String> yamlFile1Data = Parser.getDataFromFile(yamlFile1);
+        JsonNode yamlFile1Data = Parser.getNodeDataFromFile(yamlFile1);
         Set<String> actual = Parser.getFields(yamlFile1Data);
 
         Set<String> expected = Set.of("doe", "pi", "xmas", "calling-birds",
