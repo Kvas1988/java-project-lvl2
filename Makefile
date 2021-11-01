@@ -5,13 +5,13 @@ run-dist:
 	./build/install/app/bin/app
 
 lint:
-	./gradlew checkstyleMain
+	./gradlew checkstyleMain checkstyleTest
 
 test:
 	./gradlew test
 
 build:
-	./gradlew clean checkstyleMain test install
+	./gradlew clean checkstyleMain checkstyleTest test install
 
 .PHONY: build
 

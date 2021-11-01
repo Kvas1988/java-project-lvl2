@@ -33,30 +33,31 @@ public final class Diff {
         return status;
     }
 
-    Diff(String field, JsonNode initValue, JsonNode modifiedValue, DiffStatus status) {
-        this.field = field;
-        this.initValue = initValue;
-        this.modifiedValue = modifiedValue;
-        this.status = status;
+    // checktyle [HiddenField] Sucks Big Time!!!
+    Diff(String fieldParam, JsonNode initValueParam, JsonNode modifiedValueParam, DiffStatus statusParam) {
+        this.field = fieldParam;
+        this.initValue = initValueParam;
+        this.modifiedValue = modifiedValueParam;
+        this.status = statusParam;
     }
 
-    Diff(String field, JsonNode value, DiffStatus status) {
-        this.field = field;
-        this.status = status;
+    Diff(String fieldParam, JsonNode valueParam, DiffStatus statusParam) {
+        this.field = fieldParam;
+        this.status = statusParam;
 
-        switch (status) {
+        switch (statusParam) {
             case ADDED:
                 this.initValue = null;
-                this.modifiedValue = value;
+                this.modifiedValue = valueParam;
                 break;
             case REMOVED:
                 this.modifiedValue = null;
-                this.initValue = value;
+                this.initValue = valueParam;
                 break;
             default:
                 // EQUAL
-                this.initValue = value;
-                this.modifiedValue = value;
+                this.initValue = valueParam;
+                this.modifiedValue = valueParam;
 
         }
     }
