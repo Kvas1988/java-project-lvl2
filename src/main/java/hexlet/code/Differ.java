@@ -16,72 +16,36 @@ import java.util.Set;
 public class Differ {
 
     public static String generate(String filePath1, String filePath2, String format) throws IOException {
-        // Parse files to JsonNodes
-        File file1 = getFileObj(filePath1);
-        // Map<String, String> dataFile1 = Parser.getDataFromFile(file1);
-        JsonNode dataFile1 = Parser.getNodeDataFromFile(file1);
+        List<Diff> diffsList = generateDiffListFromTwoFilePaths(filePath1, filePath2);
 
-        File file2 = getFileObj(filePath2);
-        // Map<String, String> dataFile2 = Parser.getDataFromFile(file2);
-        JsonNode dataFile2 = Parser.getNodeDataFromFile(file2);
-
-        List<Diff> diffsList = getDiff(dataFile1, dataFile2);
         Formatter formatter = Formatter.getFormatter(format);
         return formatter.formatDiffsList(diffsList);
     }
 
     public static String generate(String filePath1, String filePath2) throws IOException {
-        // Parse files to JsonNodes
-        File file1 = getFileObj(filePath1);
-        // Map<String, String> dataFile1 = Parser.getDataFromFile(file1);
-        JsonNode dataFile1 = Parser.getNodeDataFromFile(file1);
-
-        File file2 = getFileObj(filePath2);
-        // Map<String, String> dataFile2 = Parser.getDataFromFile(file2);
-        JsonNode dataFile2 = Parser.getNodeDataFromFile(file2);
-
-        List<Diff> diffsList = getDiff(dataFile1, dataFile2);
+        List<Diff> diffsList = generateDiffListFromTwoFilePaths(filePath1, filePath2);
         Formatter formatter = new StylishFormatter();
         return formatter.formatDiffsList(diffsList);
     }
+
+
+    public static List<Diff> generateDiffListFromTwoFilePaths(String filePath1, String filePath2) throws IOException {
+        // Parse files to JsonNodes
+        File file1 = getFileObj(filePath1);
+        JsonNode dataFile1 = Parser.getNodeDataFromFile(file1);
+
+        File file2 = getFileObj(filePath2);
+        JsonNode dataFile2 = Parser.getNodeDataFromFile(file2);
+
+        return getDiff(dataFile1, dataFile2);
+    }
+
 
     public static File getFileObj(String filePath) {
         Path path = Paths.get(filePath);
         return path.toAbsolutePath().toFile();
     }
 
-    // public static List<String> getDiff(Map<String, String> data1, Map<String, String> data2) {
-    //
-    //     List<String> diffsList = new ArrayList<>();
-    //
-    //     Set<String> fields = Parser.getFields(data1);
-    //     fields.addAll(Parser.getFields(data2));
-    //     List<String> sortedFields = new ArrayList<>(fields);
-    //     Collections.sort(sortedFields);
-    //
-    //     for (String field : sortedFields) {
-    //         if (data1.containsKey(field)) {
-    //             String value = data1.get(field);
-    //             String fieldValueText = field + ": " + value;
-    //             if (data2.containsKey(field)) {
-    //                 if (data2.get(field).equals(value)) {
-    //                     diffsList.add("    " + fieldValueText);
-    //                 } else {
-    //                     String fieldValueFromData2 = field + ": " + data2.get(field);
-    //                     diffsList.add("  - " + fieldValueText);
-    //                     diffsList.add("  + " + fieldValueFromData2);
-    //                 }
-    //             } else {
-    //                 diffsList.add("  - " + fieldValueText);
-    //             }
-    //         } else {
-    //             String fieldValueFromNode2 = field + ": " + data2.get(field);
-    //             diffsList.add("  + " + fieldValueFromNode2);
-    //         }
-    //     }
-    //
-    //     return diffsList;
-    // }
 
     public static List<Diff> getDiff(JsonNode node1, JsonNode node2) {
 
@@ -111,18 +75,5 @@ public class Differ {
         }
 
         return diffsList;
-    }
-
-
-
-
-    public static String diffsListToString(List<Diff> diffsList) {
-        StringBuilder sb = new StringBuilder("{\n");
-        for (Diff diff : diffsList) {
-            sb.append(diff + "\n");
-        }
-
-        sb.append("}");
-        return sb.toString();
     }
 }

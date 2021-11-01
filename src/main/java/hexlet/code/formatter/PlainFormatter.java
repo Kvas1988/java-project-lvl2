@@ -11,7 +11,16 @@ public final class PlainFormatter implements Formatter {
     public String formatDiffsList(List<Diff> diffList) {
         StringBuilder sb = new StringBuilder();
 
+        // TODO: Remove new line in the end
+        boolean isFirstLine = true;
+
         for (Diff diff : diffList) {
+
+            if (isFirstLine) {
+                isFirstLine = false;
+            } else {
+                sb.append("\n");
+            }
 
             String value;
             String field = diff.getField();
@@ -25,13 +34,11 @@ public final class PlainFormatter implements Formatter {
                             .append(field)
                             .append("' was added with value: ")
                             .append(value)
-                            .append("\n");
                     break;
                 case REMOVED:
                     sb.append("Property '")
                             .append(field)
                             .append("' was removed")
-                            .append("\n");
                     break;
                 case MODIFIED:
                     value = formatValue(diff.getInitValue());
@@ -42,7 +49,6 @@ public final class PlainFormatter implements Formatter {
                             .append(value)
                             .append(" to ")
                             .append(modifiedValue)
-                            .append("\n");
                     break;
                 default:
                     break;
