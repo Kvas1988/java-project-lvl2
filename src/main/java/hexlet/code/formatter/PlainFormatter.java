@@ -17,23 +17,21 @@ public final class PlainFormatter implements Formatter {
             String field = diff.getField();
 
             switch (diff.getStatus()) {
-                case EQUAL:
-                    break;
-                case ADDED:
+                case ADDED -> {
                     value = formatValue(diff.getModifiedValue());
                     sb.append("Property '")
                             .append(field)
                             .append("' was added with value: ")
                             .append(value)
                             .append("\n");
-                    break;
-                case REMOVED:
+                }
+                case REMOVED -> {
                     sb.append("Property '")
                             .append(field)
                             .append("' was removed")
                             .append("\n");
-                    break;
-                case MODIFIED:
+                }
+                case MODIFIED -> {
                     value = formatValue(diff.getInitValue());
                     String modifiedValue = formatValue(diff.getModifiedValue());
                     sb.append("Property '")
@@ -43,9 +41,8 @@ public final class PlainFormatter implements Formatter {
                             .append(" to ")
                             .append(modifiedValue)
                             .append("\n");
-                    break;
-                default:
-                    break;
+                }
+                default -> {}
             }
         }
 

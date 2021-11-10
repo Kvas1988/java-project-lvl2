@@ -3,6 +3,7 @@ package hexlet.code;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+
 @JsonSerialize(using = DiffSerializer.class)
 public final class Diff {
     public enum DiffStatus {
@@ -40,28 +41,4 @@ public final class Diff {
         this.modifiedValue = modifiedValueParam;
         this.status = statusParam;
     }
-
-    Diff(String fieldParam, JsonNode valueParam, DiffStatus statusParam) {
-        this.field = fieldParam;
-        this.status = statusParam;
-
-        switch (statusParam) {
-            case ADDED:
-                this.initValue = null;
-                this.modifiedValue = valueParam;
-                break;
-            case REMOVED:
-                this.modifiedValue = null;
-                this.initValue = valueParam;
-                break;
-            default:
-                // EQUAL
-                this.initValue = valueParam;
-                this.modifiedValue = valueParam;
-
-        }
-    }
-
-
-
 }

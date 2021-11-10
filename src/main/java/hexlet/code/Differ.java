@@ -51,6 +51,7 @@ public class Differ {
 
         List<Diff> diffsList = new ArrayList<>();
 
+        // get fields from nodes and sort them
         Set<String> fields = Parser.getFields(node1);
         fields.addAll(Parser.getFields(node2));
         List<String> sortedFields = new ArrayList<>(fields);
@@ -58,19 +59,20 @@ public class Differ {
 
         for (String field : sortedFields) {
 
+            // TODO: More accurate way ?
             if (node1.has(field)) {
                 JsonNode valueNode = node1.get(field);
                 if (node2.has(field)) {
                     if (node2.get(field).equals(valueNode)) {
-                        diffsList.add(new Diff(field, valueNode, Diff.DiffStatus.EQUAL));
+                        diffsList.add(new Diff(field, valueNode, valueNode, Diff.DiffStatus.EQUAL));
                     } else {
                         diffsList.add(new Diff(field, valueNode, node2.get(field), Diff.DiffStatus.MODIFIED));
                     }
                 } else {
-                    diffsList.add(new Diff(field, valueNode, Diff.DiffStatus.REMOVED));
+                    diffsList.add(new Diff(field, valueNode, null, Diff.DiffStatus.REMOVED));
                 }
             } else {
-                diffsList.add(new Diff(field, node2.get(field), Diff.DiffStatus.ADDED));
+                diffsList.add(new Diff(field, null, node2.get(field), Diff.DiffStatus.ADDED));
             }
         }
 

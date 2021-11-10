@@ -11,7 +11,6 @@ public final class JsonFormatter implements Formatter {
     public String formatDiffsList(List<Diff> diffList) {
 
         StringBuilder sb = new StringBuilder();
-
         ObjectMapper mapper = new ObjectMapper();
 
         for (Diff diff : diffList) {

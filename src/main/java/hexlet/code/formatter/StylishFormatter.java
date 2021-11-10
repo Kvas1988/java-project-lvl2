@@ -17,17 +17,17 @@ public final class StylishFormatter implements Formatter {
             String value;
 
             switch (diff.getStatus()) {
-                case ADDED:
+                case ADDED -> {
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    break;
-                case REMOVED:
+                }
+                case REMOVED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
-                    break;
-                case MODIFIED:
+                }
+                case MODIFIED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
@@ -35,14 +35,13 @@ public final class StylishFormatter implements Formatter {
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    break;
-                case EQUAL:
+                }
+                case EQUAL -> {
                     statusString = "    ";
                     value = diff.getModifiedValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    break;
-                default:
-                    break;
+                }
+                default -> {}
             }
         }
 
