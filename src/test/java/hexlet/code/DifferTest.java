@@ -2,16 +2,22 @@ package hexlet.code;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.formatter.JsonFormatter;
+import picocli.CommandLine;
 import hexlet.code.formatter.PlainFormatter;
 import hexlet.code.formatter.StylishFormatter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -20,101 +26,94 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class DifferTest {
 
-    private String jsonFilename1;
-    private String jsonFilename2;
-    private String jsonFilename3;
-    private String jsonFilename4;
-    private String notExistingFilepath;
-    private String notJsonFilepath;
-    private String emptyJsonFilepath;
-    private String jsonStringFile1;
-    private String yamlFilename1;
-    private String yamlFilename2;
-    private String yamlFilename3;
-    private String yamlFilename4;
-    private String yamlStringFile1;
-    private String differFiles3And4;
+    // TODO: test generate
 
-    private File jsonFile1;
-    private File jsonFile2;
-    private File jsonFile3;
-    private File jsonFile4;
-    private File notExistingFile;
-    private File notJsonFile;
-    private File emptyJsonFile;
-    private File yamlFile1;
-    private File yamlFile2;
-    private File yamlFile3;
-    private File yamlFile4;
+    private String jsonFilename1 = "src/test/resources/file1.json";
+    private String jsonFilename2 = "src/test/resources/file2.json";
+    private String jsonFilename3 = "src/test/resources/file3.json";
+    private String jsonFilename4 = "src/test/resources/file4.json";
+    private String notExistingFilepath = "src/test/resources/I_DONT_EXIST.json";
+    private String notJsonFilepath = "src/test/resources/notJson.json";
+    private String emptyJsonFilepath = "src/test/resources/empty.json";
+    private String yamlFilename1 = "src/test/resources/file1.yml";
+    private String yamlFilename2 = "src/test/resources/file2.yml";
+    private String yamlFilename3 = "src/test/resources/file3.yml";
+    private String yamlFilename4 = "src/test/resources/file4.yml";
+
+    private File jsonFile1 = Differ.getFileObj(jsonFilename1);
+    private File jsonFile2 = Differ.getFileObj(jsonFilename2);
+    private File jsonFile3 = Differ.getFileObj(jsonFilename3);
+    private File jsonFile4 = Differ.getFileObj(jsonFilename4);
+    private File notExistingFile = Differ.getFileObj(notExistingFilepath);
+    private File notJsonFile = Differ.getFileObj(notJsonFilepath);
+    private File emptyJsonFile = Differ.getFileObj(emptyJsonFilepath);
+    private File yamlFile1 = Differ.getFileObj(yamlFilename1);
+    private File yamlFile2 = Differ.getFileObj(yamlFilename2);
+    private File yamlFile3 = Differ.getFileObj(yamlFilename3);
+    private File yamlFile4 = Differ.getFileObj(yamlFilename4);
 
     private StylishFormatter stylishFormatter = new StylishFormatter();
     private PlainFormatter plainFormatter = new PlainFormatter();
+    private JsonFormatter jsonFormatter = new JsonFormatter();
 
-    @BeforeEach
-    void setup() {
-        jsonFilename1 = "src/test/resources/file1.json";
-        jsonFilename2 = "src/test/resources/file2.json";
-        jsonFilename3 = "src/test/resources/file3.json";
-        jsonFilename4 = "src/test/resources/file4.json";
-        notExistingFilepath = "src/test/resources/I_DONT_EXIST.json";
-        notJsonFilepath = "src/test/resources/notJson.json";
-        emptyJsonFilepath = "src/test/resources/empty.json";
-        yamlFilename1 = "src/test/resources/file1.yml";
-        yamlFilename2 = "src/test/resources/file2.yml";
-        yamlFilename3 = "src/test/resources/file3.yml";
-        yamlFilename4 = "src/test/resources/file4.yml";
+    // private String differFiles3And4 = "{\n"
+    //             + "    chars1: [a, b, c]\n"
+    //             + "  - chars2: [d, e, f]\n"
+    //             + "  + chars2: false\n"
+    //             + "  - checked: false\n"
+    //             + "  + checked: true\n"
+    //             + "  - default: null\n"
+    //             + "  + default: [value1, value2]\n"
+    //             + "  - id: 45\n"
+    //             + "  + id: null\n"
+    //             + "  - key1: value1\n"
+    //             + "  + key2: value2\n"
+    //             + "    numbers1: [1, 2, 3, 4]\n"
+    //             + "  - numbers2: [2, 3, 4, 5]\n"
+    //             + "  + numbers2: [22, 33, 44, 55]\n"
+    //             + "  - numbers3: [3, 4, 5]\n"
+    //             + "  + numbers4: [4, 5, 6]\n"
+    //             + "  + obj1: {nestedKey=value, isNested=true}\n"
+    //             + "  - setting1: Some value\n"
+    //             + "  + setting1: Another value\n"
+    //             + "  - setting2: 200\n"
+    //             + "  + setting2: 300\n"
+    //             + "  - setting3: true\n"
+    //             + "  + setting3: none\n"
+    //             + "}";
 
-        jsonFile1 = Differ.getFileObj(jsonFilename1);
-        jsonFile2 = Differ.getFileObj(jsonFilename2);
-        jsonFile3 = Differ.getFileObj(jsonFilename3);
-        jsonFile4 = Differ.getFileObj(jsonFilename4);
-        notExistingFile = Differ.getFileObj(notExistingFilepath);
-        notJsonFile = Differ.getFileObj(notJsonFilepath);
-        emptyJsonFile = Differ.getFileObj(emptyJsonFilepath);
-        yamlFile1 = Differ.getFileObj(yamlFilename1);
-        yamlFile2 = Differ.getFileObj(yamlFilename2);
-        yamlFile3 = Differ.getFileObj(yamlFilename3);
-        yamlFile4 = Differ.getFileObj(yamlFilename4);
+    @Test
+    void cliRunTest() throws Exception {
 
+        String[] args = {jsonFilename1, jsonFilename2};
+        String actual = tapSystemOut(() -> {
+            int exitCode = new CommandLine(new App()).execute(args);
+        });
 
-        jsonStringFile1 = "{ \"host\" : \"hexlet.io\", \"timeout\" : 50, \"proxy\" : \"123.234.53.22\", "
-                + "\"follow\": false }";
+        String expected = "{\n"
+                + "  - follow: false\n"
+                + "    host: hexlet.io\n"
+                + "  - proxy: 123.234.53.22\n"
+                + "  - timeout: 50\n"
+                + "  + timeout: 20\n"
+                + "  + verbose: true\n"
+                + "}\n"; // additional new line from system out
+        assertEquals(expected, actual);
 
-        yamlStringFile1 = "{\"doe\": \"a deer, a female deer\", "
-                + "\"pi\": 3.14159,"
-                + "\"xmas\": true,"
-                + "\"calling-birds\": \"four\","
-                + "\"golden-rings\": 5, "
-                + "\"count\": 1,"
-                + "\"location\": \"a pear tree\""
-                + "\"turtle-doves\": \"two\" "
+    }
+
+    @Test
+    void generateTest() throws IOException{
+        String actual = Differ.generate(jsonFilename1, jsonFilename2);
+        String expected = "{\n"
+                + "  - follow: false\n"
+                + "    host: hexlet.io\n"
+                + "  - proxy: 123.234.53.22\n"
+                + "  - timeout: 50\n"
+                + "  + timeout: 20\n"
+                + "  + verbose: true\n"
                 + "}";
-
-        differFiles3And4 = "{\n"
-                + "    chars1: [a, b, c]\n"
-                + "  - chars2: [d, e, f]\n"
-                + "  + chars2: false\n"
-                + "  - checked: false\n"
-                + "  + checked: true\n"
-                + "  - default: null\n"
-                + "  + default: [value1, value2]\n"
-                + "  - id: 45\n"
-                + "  + id: null\n"
-                + "  - key1: value1\n"
-                + "  + key2: value2\n"
-                + "    numbers1: [1, 2, 3, 4]\n"
-                + "  - numbers2: [2, 3, 4, 5]\n"
-                + "  + numbers2: [22, 33, 44, 55]\n"
-                + "  - numbers3: [3, 4, 5]\n"
-                + "  + numbers4: [4, 5, 6]\n"
-                + "  + obj1: {nestedKey=value, isNested=true}\n"
-                + "  - setting1: Some value\n"
-                + "  + setting1: Another value\n"
-                + "  - setting2: 200\n"
-                + "  + setting2: 300\n"
-                + "  - setting3: true\n"
-                + "  + setting3: none\n"
-                + "}";
+        assertEquals(expected, actual);
     }
 
     // region getFileObj Test
@@ -140,6 +139,8 @@ public final class DifferTest {
     void getDataFromFileJsonFile1Test() throws IOException {
         JsonNode actual = Parser.getNodeDataFromFile(jsonFile1);
 
+        String jsonStringFile1 = "{ \"host\" : \"hexlet.io\", \"timeout\" : 50, \"proxy\" : \"123.234.53.22\", "
+                + "\"follow\": false }";
         JsonNode expected = new ObjectMapper().readTree(jsonStringFile1);
         assertEquals(expected, actual);
 
@@ -209,7 +210,7 @@ public final class DifferTest {
 
     // endregion
 
-    // region diffsListToString Test
+    // region stylish format Test
     @Test
     void diffsListStylishFormatterJsonTest() throws IOException {
         JsonNode jsonFile1Data = Parser.getNodeDataFromFile(jsonFile1);
@@ -252,7 +253,20 @@ public final class DifferTest {
         assertEquals(expected, actual);
     }
 
-    // endregions
+    // endregion
+
+    // region json formatter
+    @Test
+    void jsonFormatterYamlTest() throws IOException{
+        JsonNode yamlFile1Data = Parser.getNodeDataFromFile(yamlFile1);
+        JsonNode yamlFile2Data = Parser.getNodeDataFromFile(yamlFile2);
+
+        List<Diff> diffList = Differ.getDiff(yamlFile1Data, yamlFile2Data);
+        String actual = jsonFormatter.formatDiffsList(diffList);
+        String expected = Files.readString(new File("src/test/resources/yaml_1_2_expected_diff.txt").toPath());
+        assertEquals(expected, actual);
+    }
+    // endregion
 
     @Test
     void getNodeDataFromFileComplexJsonTest() throws IOException {
@@ -262,7 +276,8 @@ public final class DifferTest {
         List<Diff> diff = Differ.getDiff(node3, node4);
         String diffString = stylishFormatter.formatDiffsList(diff);
 
-        assertEquals(differFiles3And4, diffString);
+        String expected = Files.readString(new File("src/test/resources/json_3_4_expected_diff.txt").toPath());
+        assertEquals(expected, diffString);
     }
 
     @Test
@@ -273,6 +288,7 @@ public final class DifferTest {
         List<Diff> diff = Differ.getDiff(node3, node4);
         String diffString = stylishFormatter.formatDiffsList(diff);
 
-        assertEquals(differFiles3And4, diffString);
+        String expected = Files.readString(new File("src/test/resources/json_3_4_expected_diff.txt").toPath());
+        assertEquals(expected, diffString);
     }
 }

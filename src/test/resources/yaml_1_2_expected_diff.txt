@@ -1,0 +1,51 @@
+{
+  "calling-birds" : {
+    "file1" : "four",
+    "file2" : "four"
+  }
+}{
+  "count" : {
+    "file1" : 1,
+    "file2" : 1
+  }
+}{
+  "doe" : {
+    "file1" : "a deer, a female deer",
+    "file2" : null
+  }
+}{
+  "french-hens" : {
+    "file1" : null,
+    "file2" : 3
+  }
+}{
+  "golden-rings" : {
+    "file1" : 5,
+    "file2" : 6
+  }
+}{
+  "location" : {
+    "file1" : "a pear tree",
+    "file2" : "a pear tree"
+  }
+}{
+  "pi" : {
+    "file1" : 3.14159,
+    "file2" : 3.14159
+  }
+}{
+  "ray" : {
+    "file1" : null,
+    "file2" : "a drop of golden sun"
+  }
+}{
+  "turtle-doves" : {
+    "file1" : "two",
+    "file2" : "three"
+  }
+}{
+  "xmas" : {
+    "file1" : true,
+    "file2" : true
+  }
+}
