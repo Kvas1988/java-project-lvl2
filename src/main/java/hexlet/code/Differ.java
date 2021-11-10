@@ -59,7 +59,6 @@ public class Differ {
 
         for (String field : sortedFields) {
 
-            // TODO: More accurate way ?
             if (node1.has(field)) {
                 JsonNode valueNode = node1.get(field);
                 if (node2.has(field)) {

@@ -41,7 +41,7 @@ public final class StylishFormatter implements Formatter {
                     value = diff.getModifiedValue().toString();
                     sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
                 }
-                default -> {}
+                default -> { }
             }
         }
 

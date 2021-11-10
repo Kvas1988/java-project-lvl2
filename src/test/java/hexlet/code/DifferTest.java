@@ -10,13 +10,11 @@ import hexlet.code.formatter.StylishFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class DifferTest {
-
-    // TODO: test generate
 
     private String jsonFilename1 = "src/test/resources/file1.json";
     private String jsonFilename2 = "src/test/resources/file2.json";
@@ -103,7 +99,7 @@ public final class DifferTest {
     }
 
     @Test
-    void generateTest() throws IOException{
+    void generateTest() throws IOException {
         String actual = Differ.generate(jsonFilename1, jsonFilename2);
         String expected = "{\n"
                 + "  - follow: false\n"
@@ -257,7 +253,7 @@ public final class DifferTest {
 
     // region json formatter
     @Test
-    void jsonFormatterYamlTest() throws IOException{
+    void jsonFormatterYamlTest() throws IOException {
         JsonNode yamlFile1Data = Parser.getNodeDataFromFile(yamlFile1);
         JsonNode yamlFile2Data = Parser.getNodeDataFromFile(yamlFile2);
 

@@ -42,7 +42,7 @@ public final class PlainFormatter implements Formatter {
                             .append(modifiedValue)
                             .append("\n");
                 }
-                default -> {}
+                default -> { }
             }
         }
 

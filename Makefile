@@ -11,7 +11,7 @@ test:
 	./gradlew test
 
 build:
-	./gradlew clean checkstyleMain checkstyleTest test install
+	./gradlew build
 
 .PHONY: build
 
