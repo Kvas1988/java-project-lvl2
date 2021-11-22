@@ -62,7 +62,7 @@ public final class PlainFormatter implements Formatter {
         }
 
         if (value instanceof String && !value.equals("null")) {
-            String result = "'" + value.toString() + "'";
+            String result = "'" + value + "'";
             return result.replaceAll("\"", "'");
         }
 

@@ -13,8 +13,6 @@ public final class Diff {
     }
 
     private final String field;
-    // private final JsonNode initValue;
-    // private final JsonNode modifiedValue;
     private final Object initValue;
     private final Object modifiedValue;
     private final DiffStatus status;

@@ -20,31 +20,26 @@ public final class StylishFormatter implements Formatter {
                 case ADDED -> {
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
-                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    sb.append(formatDiff(field, value, statusString, false));
+                    sb.append(formatDiff(field, value, statusString));
                 }
                 case REMOVED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
-                    // sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
-                    sb.append(formatDiff(field, value, statusString, false));
+                    sb.append(formatDiff(field, value, statusString));
                 }
                 case MODIFIED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
-                    // sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
-                    sb.append(formatDiff(field, value, statusString, false));
+                    sb.append(formatDiff(field, value, statusString));
 
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
-                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    sb.append(formatDiff(field, value, statusString, false));
+                    sb.append(formatDiff(field, value, statusString));
                 }
                 case EQUAL -> {
                     statusString = "    ";
                     value = diff.getModifiedValue().toString();
-                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
-                    sb.append(formatDiff(field, value, statusString, false));
+                    sb.append(formatDiff(field, value, statusString));
                 }
                 default -> { }
             }
@@ -54,14 +49,10 @@ public final class StylishFormatter implements Formatter {
         return sb.toString();
     }
 
-    private String formatDiff(String field, String value, String status, boolean isValueCointaier) {
+    private String formatDiff(String field, String value, String status) {
         StringBuilder sb = new StringBuilder(status);
 
         value = value.replaceAll("\"", "");
-        if (isValueCointaier) {
-            value = value.replaceAll(",", ", ");
-            value = value.replaceAll(":", "=");
-        }
         sb.append(field)
                 .append(": ")
                 .append(value)
