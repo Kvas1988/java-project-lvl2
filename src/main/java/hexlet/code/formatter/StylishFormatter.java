@@ -20,26 +20,31 @@ public final class StylishFormatter implements Formatter {
                 case ADDED -> {
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
-                    sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    sb.append(formatDiff(field, value, statusString, false));
                 }
                 case REMOVED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
-                    sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
+                    // sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
+                    sb.append(formatDiff(field, value, statusString, false));
                 }
                 case MODIFIED -> {
                     statusString = "  - ";
                     value = diff.getInitValue().toString();
-                    sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
+                    // sb.append(formatDiff(field, value, statusString, diff.getInitValue().isContainerNode()));
+                    sb.append(formatDiff(field, value, statusString, false));
 
                     statusString = "  + ";
                     value = diff.getModifiedValue().toString();
-                    sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    sb.append(formatDiff(field, value, statusString, false));
                 }
                 case EQUAL -> {
                     statusString = "    ";
                     value = diff.getModifiedValue().toString();
-                    sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    // sb.append(formatDiff(field, value, statusString, diff.getModifiedValue().isContainerNode()));
+                    sb.append(formatDiff(field, value, statusString, false));
                 }
                 default -> { }
             }

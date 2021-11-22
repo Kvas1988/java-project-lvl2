@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -14,19 +13,21 @@ public final class Diff {
     }
 
     private final String field;
-    private final JsonNode initValue;
-    private final JsonNode modifiedValue;
+    // private final JsonNode initValue;
+    // private final JsonNode modifiedValue;
+    private final Object initValue;
+    private final Object modifiedValue;
     private final DiffStatus status;
 
     public String getField() {
         return field;
     }
 
-    public JsonNode getInitValue() {
+    public Object getInitValue() {
         return initValue;
     }
 
-    public JsonNode getModifiedValue() {
+    public Object getModifiedValue() {
         return modifiedValue;
     }
 
@@ -35,7 +36,7 @@ public final class Diff {
     }
 
     // checktyle [HiddenField] Sucks Big Time!!!
-    Diff(String fieldParam, JsonNode initValueParam, JsonNode modifiedValueParam, DiffStatus statusParam) {
+    Diff(String fieldParam, Object initValueParam, Object modifiedValueParam, DiffStatus statusParam) {
         this.field = fieldParam;
         this.initValue = initValueParam;
         this.modifiedValue = modifiedValueParam;

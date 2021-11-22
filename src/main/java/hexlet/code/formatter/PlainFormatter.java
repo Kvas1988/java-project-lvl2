@@ -1,9 +1,10 @@
 package hexlet.code.formatter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import hexlet.code.Diff;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public final class PlainFormatter implements Formatter {
 
@@ -55,15 +56,16 @@ public final class PlainFormatter implements Formatter {
         return sb.toString();
     }
 
-    private String formatValue(JsonNode value) {
-        if (value.isContainerNode()) {
+    private String formatValue(Object value) {
+        if (value instanceof Collection<?> || value instanceof Map<?, ?>) {
             return  "[complex value]";
         }
 
-        if (value.isNull() || value.isNumber() || value.isBoolean()) {
-            return value.toString();
+        if (value instanceof String && !value.equals("null")) {
+            String result = "'" + value.toString() + "'";
+            return result.replaceAll("\"", "'");
         }
 
-        return value.toString().replaceAll("\"", "'");
+        return value.toString();
     }
 }

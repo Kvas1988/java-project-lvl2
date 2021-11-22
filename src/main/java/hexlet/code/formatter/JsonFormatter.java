@@ -8,14 +8,16 @@ import java.util.List;
 
 public final class JsonFormatter implements Formatter {
     @Override
-    public String formatDiffsList(List<Diff> diffList) {
+    public String formatDiffsList(List<Diff> diffs) {
 
         StringBuilder sb = new StringBuilder();
         ObjectMapper mapper = new ObjectMapper();
 
-        for (Diff diff : diffList) {
+        for (Diff diff : diffs) {
             try {
-                sb.append(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(diff));
+                String output = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(diff);
+                output = output.replaceAll("\"null\"", "null");
+                sb.append(output);
             } catch (JsonProcessingException e) {
                 System.out.println(e.getMessage());
             }
