@@ -14,7 +14,8 @@ public class Parser {
     public static Map<String, Object> parse(String data, String fileType) throws JsonProcessingException {
         JsonFactory factory = switch (fileType) {
             case "yml" -> new YAMLFactory();
-            default -> new JsonFactory();
+            case "json" -> new JsonFactory();
+            default -> throw new RuntimeException("given file extension is not supported");
         };
 
         ObjectMapper mapper = new ObjectMapper(factory);

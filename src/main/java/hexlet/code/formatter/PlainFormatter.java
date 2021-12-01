@@ -3,23 +3,23 @@ package hexlet.code.formatter;
 import hexlet.code.Diff;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public final class PlainFormatter implements Formatter {
 
     @Override
-    public String formatDiffsList(List<Diff> diffList) {
+    public String formatDiffsList(Map<String, Diff> diffs) {
         StringBuilder sb = new StringBuilder();
 
-        for (Diff diff : diffList) {
+        for (Map.Entry<String, Diff> entry : diffs.entrySet()) {
 
             String value;
-            String field = diff.getField();
+            String field = entry.getKey();
+            Diff diff = entry.getValue();
 
             switch (diff.getStatus()) {
                 case ADDED -> {
-                    value = formatValue(diff.getModifiedValue());
+                    value = formatValue(diff.getValue2());
                     sb.append("Property '")
                             .append(field)
                             .append("' was added with value: ")
@@ -33,8 +33,8 @@ public final class PlainFormatter implements Formatter {
                             .append("\n");
                 }
                 case MODIFIED -> {
-                    value = formatValue(diff.getInitValue());
-                    String modifiedValue = formatValue(diff.getModifiedValue());
+                    value = formatValue(diff.getValue1());
+                    String modifiedValue = formatValue(diff.getValue2());
                     sb.append("Property '")
                             .append(field)
                             .append("' was updated. From ")
@@ -57,11 +57,15 @@ public final class PlainFormatter implements Formatter {
     }
 
     private String formatValue(Object value) {
+        if (value == null) {
+            return null;
+        }
+
         if (value instanceof Collection<?> || value instanceof Map<?, ?>) {
             return  "[complex value]";
         }
 
-        if (value instanceof String && !value.equals("null")) {
+        if (value instanceof String) {
             String result = "'" + value + "'";
             return result.replaceAll("\"", "'");
         }

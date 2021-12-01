@@ -130,7 +130,7 @@ public final class DifferTest {
     @Test
     void yamlFilesJsonFormatterTest() throws IOException {
         String actual = Differ.generate(yamlFilename1, yamlFilename2, "json");
-        String expected = Files.readString(new File("src/test/resources/yaml_1_2_expected_diff.txt").toPath());
+        String expected = Files.readString(new File("src/test/resources/yaml_1_2_expected_diff_v2.txt").toPath());
         assertEquals(expected, actual);
     }
 

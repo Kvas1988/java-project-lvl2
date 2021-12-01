@@ -1,9 +1,9 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonSerialize(using = DiffSerializer.class)
 public final class Diff {
     public enum DiffStatus {
         EQUAL,
@@ -12,21 +12,20 @@ public final class Diff {
         MODIFIED
     }
 
-    private final String field;
-    private final Object initValue;
-    private final Object modifiedValue;
+    @JsonProperty("file1")
+    private final Object value1;
+    @JsonProperty("file2")
+    private final Object value2;
+    @JsonIgnore
     private final DiffStatus status;
 
-    public String getField() {
-        return field;
+
+    public Object getValue1() {
+        return value1;
     }
 
-    public Object getInitValue() {
-        return initValue;
-    }
-
-    public Object getModifiedValue() {
-        return modifiedValue;
+    public Object getValue2() {
+        return value2;
     }
 
     public DiffStatus getStatus() {
@@ -34,10 +33,9 @@ public final class Diff {
     }
 
     // checktyle [HiddenField] Sucks Big Time!!!
-    Diff(String fieldParam, Object initValueParam, Object modifiedValueParam, DiffStatus statusParam) {
-        this.field = fieldParam;
-        this.initValue = initValueParam;
-        this.modifiedValue = modifiedValueParam;
+    Diff(Object value1Param, Object value2Param, DiffStatus statusParam) {
+        this.value1 = value1Param;
+        this.value2 = value2Param;
         this.status = statusParam;
     }
 }

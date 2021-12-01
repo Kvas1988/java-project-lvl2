@@ -4,25 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.Diff;
 
-import java.util.List;
+import java.util.Map;
 
 public final class JsonFormatter implements Formatter {
+
     @Override
-    public String formatDiffsList(List<Diff> diffs) {
-
-        StringBuilder sb = new StringBuilder();
+    public String formatDiffsList(Map<String, Diff> diffs) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-
-        for (Diff diff : diffs) {
-            try {
-                String output = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(diff);
-                output = output.replaceAll("\"null\"", "null");
-                sb.append(output);
-            } catch (JsonProcessingException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        return sb.toString();
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(diffs);
     }
 }

@@ -1,20 +1,22 @@
 package hexlet.code.formatter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import hexlet.code.Diff;
 
-import java.util.List;
+import java.util.Map;
 
 public interface Formatter {
 
     static Formatter getFormatter(String format) {
-        if (format.equals("plain")) {
-            return new PlainFormatter();
-        } else if (format.equals("json")) {
-            return new JsonFormatter();
-        }
+        Formatter formatter = switch (format) {
+            case "plain" -> new PlainFormatter();
+            case "json" -> new JsonFormatter();
+            case "stylish" -> new StylishFormatter();
+            default -> throw new RuntimeException("invalid format type given");
+        };
 
-        return new StylishFormatter();
+        return formatter;
     }
 
-    String formatDiffsList(List<Diff> diffList);
+    String formatDiffsList(Map<String, Diff> diffList) throws JsonProcessingException;
 }

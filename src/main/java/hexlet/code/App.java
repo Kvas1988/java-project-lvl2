@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 public class App implements Callable<String> {
 
     @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
-    private String format = "format";
+    private String format = "stylish";
 
     @Parameters(paramLabel = "filepath1", description = "Path to first file")
     private String filePath1 = "Hello picocli"; // defaultValue in @Parameters will be used if no given in args
