@@ -1,0 +1,14 @@
+{
+    calling-birds: four
+    count: 1
+  - doe: a deer, a female deer
+  + french-hens: 3
+  - golden-rings: 5
+  + golden-rings: 6
+    location: a pear tree
+    pi: 3.14159
+  + ray: a drop of golden sun
+  - turtle-doves: two
+  + turtle-doves: three
+    xmas: true
+}

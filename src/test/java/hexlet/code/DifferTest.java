@@ -14,17 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class DifferTest {
 
-    private String jsonFilename1 = "src/test/resources/file1.json";
-    private String jsonFilename2 = "src/test/resources/file2.json";
-    private String jsonFilename3 = "src/test/resources/file3.json";
-    private String jsonFilename4 = "src/test/resources/file4.json";
+    private String jsonFilename1 = getResourceFile("file1.json").getAbsolutePath();
+    private String jsonFilename2 = getResourceFile("file2.json").getAbsolutePath();
+    private String jsonFilename3 = getResourceFile("file3.json").getAbsolutePath();
+    private String jsonFilename4 = getResourceFile("file4.json").getAbsolutePath();
+    private String notJsonFilepath = getResourceFile("notJson.json").getAbsolutePath();
+    private String yamlFilename1 = getResourceFile("file1.yml").getAbsolutePath();
+    private String yamlFilename2 = getResourceFile("file2.yml").getAbsolutePath();
+    private String yamlFilename3 = getResourceFile("file3.yml").getAbsolutePath();
+    private String yamlFilename4 = getResourceFile("file4.yml").getAbsolutePath();
     private String notExistingFilepath = "src/test/resources/I_DONT_EXIST.json";
-    private String notJsonFilepath = "src/test/resources/notJson.json";
-    private String emptyJsonFilepath = "src/test/resources/empty.json";
-    private String yamlFilename1 = "src/test/resources/file1.yml";
-    private String yamlFilename2 = "src/test/resources/file2.yml";
-    private String yamlFilename3 = "src/test/resources/file3.yml";
-    private String yamlFilename4 = "src/test/resources/file4.yml";
+
+    private File getResourceFile(String filename) {
+        // https://mkyong.com/java/java-read-a-file-from-resources-folder/
+        return new File(getClass().getClassLoader().getResource(filename).getFile());
+    }
 
     @Test
     void cliRunTest() throws Exception {
@@ -33,30 +37,8 @@ public final class DifferTest {
         String actual = tapSystemOut(() -> {
             int exitCode = new CommandLine(new App()).execute(args);
         });
-
-        String expected = "{\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}\n"; // additional new line from system out
-        assertEquals(expected, actual);
-
-    }
-
-    @Test
-    void generateTest() throws IOException {
-        String actual = Differ.generate(jsonFilename1, jsonFilename2);
-        String expected = "{\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}";
+        String expected = Files.readString(getResourceFile("expected_json1_json2_stylish.txt").toPath());
+        expected += "\n";
         assertEquals(expected, actual);
     }
 
@@ -76,75 +58,42 @@ public final class DifferTest {
     @Test
     void yamlFilesPlainFormatterTest() throws IOException {
         String actual = Differ.generate(yamlFilename3, yamlFilename4, "plain");
-
-        String expected = "Property 'chars2' was updated. From [complex value] to false\n"
-                + "Property 'checked' was updated. From false to true\n"
-                + "Property 'default' was updated. From null to [complex value]\n"
-                + "Property 'id' was updated. From 45 to null\n"
-                + "Property 'key1' was removed\n"
-                + "Property 'key2' was added with value: 'value2'\n"
-                + "Property 'numbers2' was updated. From [complex value] to [complex value]\n"
-                + "Property 'numbers3' was removed\n"
-                + "Property 'numbers4' was added with value: [complex value]\n"
-                + "Property 'obj1' was added with value: [complex value]\n"
-                + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
-                + "Property 'setting2' was updated. From 200 to 300\n"
-                + "Property 'setting3' was updated. From true to 'none'";
+        String expected = Files.readString(getResourceFile("expected_yml3_yml4_plain.txt").toPath());
         assertEquals(expected, actual);
     }
 
     @Test
     void jsonFilesStylishFormatterTest() throws IOException {
         String actual = Differ.generate(jsonFilename1, jsonFilename2, "stylish");
-        String expected = "{\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}";
+        String expected = Files.readString(getResourceFile("expected_json1_json2_stylish.txt").toPath());
         assertEquals(expected, actual);
     }
 
     @Test
     void yamlFilesStylishFormatterTest() throws IOException {
         String actual = Differ.generate(yamlFilename1, yamlFilename2, "stylish");
-        String expected = "{\n"
-                + "    calling-birds: four\n"
-                + "    count: 1\n"
-                + "  - doe: a deer, a female deer\n"
-                + "  + french-hens: 3\n"
-                + "  - golden-rings: 5\n"
-                + "  + golden-rings: 6\n"
-                + "    location: a pear tree\n"
-                + "    pi: 3.14159\n"
-                + "  + ray: a drop of golden sun\n"
-                + "  - turtle-doves: two\n"
-                + "  + turtle-doves: three\n"
-                + "    xmas: true\n"
-                + "}";
+        String expected = Files.readString(getResourceFile("expected_yml1_yml2_stylish.txt").toPath());
         assertEquals(expected, actual);
     }
 
     @Test
     void yamlFilesJsonFormatterTest() throws IOException {
         String actual = Differ.generate(yamlFilename1, yamlFilename2, "json");
-        String expected = Files.readString(new File("src/test/resources/yaml_1_2_expected_diff_v2.txt").toPath());
+        String expected = Files.readString(getResourceFile("expected_yml1_yml2_json.txt").toPath());
         assertEquals(expected, actual);
     }
 
     @Test
     void jsonComplexFilesStylishFormatterTest() throws IOException {
         String actual = Differ.generate(jsonFilename3, jsonFilename4, "stylish");
-        String expected = Files.readString(new File("src/test/resources/json_3_4_expected_diff.txt").toPath());
+        String expected = Files.readString(getResourceFile("expected_json3_json4_stylish.txt").toPath());
         assertEquals(expected, actual);
     }
 
     @Test
     void yamlComplexFilesStylishFormatterTest() throws IOException {
         String actual = Differ.generate(yamlFilename3, yamlFilename4, "stylish");
-        String expected = Files.readString(new File("src/test/resources/json_3_4_expected_diff.txt").toPath());
+        String expected = Files.readString(getResourceFile("expected_json3_json4_stylish.txt").toPath());
         assertEquals(expected, actual);
     }
 }
